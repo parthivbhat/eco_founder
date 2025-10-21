@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Eco Alternatives</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <h1>🌿 Eco Product Finder</h1>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('recommend') }}">Find Alternatives</a>
+    </nav>
+    
+    <div class="container">
+        <h2>Find Eco-Friendly Alternatives</h2>
+        
+        <form method="POST" class="search-form">
+            <input type="text" name="product_name" placeholder="Enter product name..." required>
+            <button type="submit" class="btn">Search</button>
+        </form>
+        
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        {% if original_product %}
+        <div class="original-product">
+            <h3>You searched for:</h3>
+            <div class="product-card">
+                <h4>{{ original_product.name }}</h4>
+                <p>Eco-Score: {{ original_product.eco_score }}/100</p>
+            </div>
+        </div>
+        
+        <div class="recommendations">
+            <h3>♻️ Eco-Friendly Alternatives:</h3>
+            
+            {% if recommendations %}
+            <div class="product-grid">
+                {% for rec in recommendations %}
+                <div class="product-card eco">
+                    <h4>{{ rec.product.name }}</h4>
+                    <p>{{ rec.product.description }}</p>
+                    <p class="price">₹{{ "%.2f"|format(rec.product.price) }}</p>
+                    
+                    <div class="eco-score">
+                        Eco-Score: <span class="score">{{ rec.eco_score }}</span>/100
+                    </div>
+                    
+                    <p class="similarity">Match: {{ (rec.similarity * 100)|int }}%</p>
+                    
+                    <a href="{{ url_for('product', product_id=rec.product.id) }}" class="btn">View Details</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No eco-friendly alternatives found.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

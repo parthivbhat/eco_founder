@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <h1>🌿 Eco Product Finder</h1>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('recommend') }}">Find Alternatives</a>
+    </nav>
+    
+    <div class="container">
+        <div class="product-detail">
+            <h2>{{ product.name }}</h2>
+            
+            <div class="detail-section">
+                <p><strong>Category:</strong> {{ product.category }}</p>
+                <p><strong>Brand:</strong> {{ product.brand }}</p>
+                <p><strong>Material:</strong> {{ product.material }}</p>
+                <p><strong>Price:</strong> ₹{{ "%.2f"|format(product.price) }}</p>
+                <p><strong>Description:</strong> {{ product.description }}</p>
+            </div>
+            
+            <div class="eco-grade">
+                <h3>Environmental Rating</h3>
+                <div class="grade-badge grade-{{ grade }}">{{ grade }}</div>
+                <p>{{ grade_text }} ({{ product.eco_score }}/100)</p>
+            </div>
+            
+            {% if eco_metric %}
+            <div class="metrics">
+                <h3>Environmental Metrics</h3>
+                <ul>
+                    <li>Carbon Footprint: {{ eco_metric.carbon_footprint }} kg CO₂</li>
+                    <li>Water Usage: {{ eco_metric.water_usage }} liters</li>
+                    <li>Biodegradability: {{ eco_metric.biodegradability_score }}/100</li>
+                    <li>Recyclability: {{ eco_metric.recyclability_score }}/100</li>
+                    <li>Packaging Impact: {{ eco_metric.packaging_impact }}/100</li>
+                </ul>
+            </div>
+            {% endif %}
+            
+            <a href="{{ url_for('index') }}" class="btn">Back to Products</a>
+        </div>
+    </div>
+</body>
+</html>

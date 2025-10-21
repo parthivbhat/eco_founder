@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Friendly Product Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <h1>🌿 Eco Product Finder</h1>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('recommend') }}">Find Alternatives</a>
+    </nav>
+    
+    <div class="container">
+        <h2>All Products</h2>
+        
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card {% if product.is_eco_friendly %}eco{% endif %}">
+                <h3>{{ product.name }}</h3>
+                <p class="category">{{ product.category }}</p>
+                <p class="description">{{ product.description }}</p>
+                <p class="price">₹{{ "%.2f"|format(product.price) }}</p>
+                <p class="material">Material: {{ product.material }}</p>
+                
+                <div class="eco-score">
+                    Eco-Score: <span class="score">{{ product.eco_score }}</span>/100
+                </div>
+                
+                {% if product.is_eco_friendly %}
+                <span class="badge eco-badge">♻️ Eco-Friendly</span>
+                {% endif %}
+                
+                <a href="{{ url_for('product', product_id=product.id) }}" class="btn">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
